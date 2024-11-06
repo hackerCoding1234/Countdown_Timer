@@ -12,16 +12,15 @@ export default function Countdown() {
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleSetDuration = (): void => {
-        if (typeof duration === `number` && duration > 0) {
+        if (typeof duration === "number" && duration > 0) {
             setTimeLeft(duration);
             setIsActive(false);
             setIsPaused(false);
             if (timerRef.current) {
-                clearInterval(timerRef.current)
+                clearInterval(timerRef.current);
             }
         }
     };
-
 
     const handleStart = (): void => {
         if (timeLeft > 0) {
@@ -35,7 +34,7 @@ export default function Countdown() {
             setIsPaused(true);
             setIsActive(false);
             if (timerRef.current) {
-                clearInterval(timerRef.current)
+                clearInterval(timerRef.current);
             }
         }
     };
@@ -48,7 +47,6 @@ export default function Countdown() {
             clearInterval(timerRef.current);
         }
     };
-
 
     useEffect(() => {
         if (isActive && !isPaused) {
@@ -64,7 +62,7 @@ export default function Countdown() {
         }
         return () => {
             if (timerRef.current) {
-                clearInterval(timerRef.current)
+                clearInterval(timerRef.current);
             }
         };
     }, [isActive, isPaused]);
@@ -72,23 +70,22 @@ export default function Countdown() {
     const formatTime = (time: number): string => {
         const minutes = Math.floor(time / 60);
         const seconds = time % 60;
-        return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`
+        return `${String(minutes).padStart(2, "0")}:${String(seconds).padStart(2, "0")}`;
     };
 
     const handleDurationChange = (e: ChangeEvent<HTMLInputElement>): void => {
-        setDuration(Number(e.target.value) || "");
+        const input = Number(e.target.value);
+        if (input >= 0) {
+            setDuration(input || "");
+        }
     };
 
     return (
-        // Container div for centering the content
         <div className="flex flex-col items-center justify-center h-screen bg-gray-100 dark:bg-gray-900">
-            {/* Timer box container */}
             <div className="bg-white dark:bg-gray-800 shadow-lg rounded-lg p-8 w-full max-w-md">
-                {/* Title of the countdown timer */}
                 <h1 className="text-2xl font-bold mb-4 text-gray-800 dark:text-gray-200 text-center">
                     Countdown Timer
                 </h1>
-                {/* Input and set button container */}
                 <div className="flex items-center mb-6">
                     <Input
                         type="number"
@@ -106,11 +103,9 @@ export default function Countdown() {
                         Set
                     </Button>
                 </div>
-                {/* Display the formatted time left */}
                 <div className="text-6xl font-bold text-gray-800 dark:text-gray-200 mb-8 text-center">
                     {formatTime(timeLeft)}
                 </div>
-                {/* Buttons to start, pause, and reset the timer */}
                 <div className="flex justify-center gap-4">
                     <Button
                         onClick={handleStart}
@@ -137,10 +132,4 @@ export default function Countdown() {
             </div>
         </div>
     );
-};
-
-
-
-
-
-
+}
